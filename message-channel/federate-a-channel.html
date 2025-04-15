@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Federate a channel</title>
+  </head>
+  <body>
+    <p>I am main document, hello</p>
+    <iframe class="first" src="./side.html" frameborder="0"></iframe>
+    <iframe class="second" src="./side.html" frameborder="0"></iframe>
+  </body>
+  <script>
+    const channel = new MessageChannel();
+    document
+      .querySelector(".first")
+      .contentWindow.postMessage({ type: "INIT_PORT" }, "*", [channel.port1]);
+    document
+      .querySelector(".second")
+      .contentWindow.postMessage({ type: "INIT_PORT" }, "*", [channel.port2]);
+    console.log(channel);
+  </script>
+</html>

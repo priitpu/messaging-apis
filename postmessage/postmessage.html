@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Postmessage</title>
+  </head>
+  <body>
+    <div class="messages"></div>
+    <button>fire!!!</button>
+  </body>
+  <script>
+    window.addEventListener("message", (event) => {
+      if (event.data.type !== "wow!") {
+        return;
+      }
+      const messages = document.querySelector(".messages");
+      const message = document.createElement("div");
+      message.innerText = event.data.message;
+      messages.appendChild(message);
+    });
+    document.querySelector("button").addEventListener("click", () => {
+      window.postMessage(
+        { type: "wow!", message: "koik me kuulame sama asja crazy" },
+        "*",
+        []
+      );
+    });
+  </script>
+</html>

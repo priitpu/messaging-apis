@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Postmessage</title>
+  </head>
+  <body>
+    <div class="messages"></div>
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+
+    <iframe src="./postmessage.html" frameborder="0"></iframe>
+  </body>
+  <script>
+    window.addEventListener("message", (event) => {
+      if (event.data.type !== "wow!") {
+        return;
+      }
+      console.log(event);
+      const messages = document.querySelector(".messages");
+      const message = document.createElement("div");
+      message.innerText = event.data.message;
+      messages.appendChild(message);
+    });
+  </script>
+</html>

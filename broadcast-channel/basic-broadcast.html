@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="messages"></div>
+    <button>send</button>
+  </body>
+  <script>
+    const bc = new BroadcastChannel("test_channel");
+    document.querySelector("button").addEventListener("click", () => {
+      bc.postMessage("hello world");
+    });
+    bc.onmessage = (event) => {
+      const messages = document.querySelector(".messages");
+      const message = document.createElement("div");
+      message.innerText = event.data;
+      messages.appendChild(message);
+    };
+  </script>
+</html>

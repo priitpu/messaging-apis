@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="first">
+      <button>Send a very secure event</button>
+    </div>
+    <div class="second">
+      <button>Send a very secure event, also</button>
+    </div>
+  </body>
+  <script>
+    class VeryCoolCrazyClass {
+      #channel = new MessageChannel();
+      constructor() {
+        this.#channel.port1.onmessage = (event) => {
+          if (event.data.type === "EVENT") {
+            console.log(event.data.data, "VERY COOL!");
+          }
+        };
+      }
+      get port1() {
+        return this.#channel.port1;
+      }
+      get port2() {
+        return this.#channel.port2;
+      }
+      sendMessage() {
+        this.port1.postMessage({
+          type: "EVENT",
+          data: "woo!",
+        });
+      }
+    }
+    class OtherAlsoCoolClass {
+      #sendPort;
+      constructor(sendPort) {
+        this.#sendPort = sendPort;
+        this.#sendPort.onmessage = (event) => {
+          if (event.data.type === "EVENT") {
+            console.log(event.data.data, "OTHER COOL!");
+          }
+        };
+      }
+      sendMessage() {
+        this.#sendPort.postMessage({
+          type: "EVENT",
+          data: "woo!",
+        });
+      }
+    }
+    const veryCool = new VeryCoolCrazyClass();
+    const otherCool = new OtherAlsoCoolClass(veryCool.port2);
+    document
+      .querySelector(".first button")
+      .addEventListener("click", () => veryCool.sendMessage());
+    document
+      .querySelector(".second button")
+      .addEventListener("click", () => otherCool.sendMessage());
+  </script>
+</html>

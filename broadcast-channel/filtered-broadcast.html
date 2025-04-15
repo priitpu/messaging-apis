@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <select>
+      <option selected value="priit">priit</option>
+      <option value="on">on</option>
+      <option value="su">su</option>
+      <option value="isa">isa</option>
+    </select>
+    <div class="messages"></div>
+    <button>send</button>
+  </body>
+  <script>
+    const bc = new BroadcastChannel("test_channel");
+    document.querySelector("button").addEventListener("click", () => {
+      bc.postMessage({
+        text: "hello world",
+        target: document.querySelector("select").value,
+      });
+    });
+    bc.onmessage = (event) => {
+      if (event.data.target !== document.querySelector("select").value) {
+        return;
+      }
+      const messages = document.querySelector(".messages");
+      const message = document.createElement("div");
+      message.innerText = event.data.text;
+      messages.appendChild(message);
+    };
+  </script>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    I am side document
+    <button>Send an event!</button>
+    <div class="messages"></div>
+  </body>
+  <script>
+    let messagePort = null;
+    window.addEventListener("message", (event) => {
+      console.log(event);
+      if (event.data.type === "INIT_PORT") {
+        messagePort = event.ports[0];
+        messagePort.postMessage({
+          type: "PORT_SUCCESS",
+          data: "hello from side.html",
+        });
+        messagePort.onmessage = (event) => {
+          if (event.data.type === "PORT_SUCCESS") {
+            console.info("Port initialized successfully", event.data.data);
+          }
+          if (event.data.type === "EVENT") {
+            const messages = document.querySelector(".messages");
+            const message = document.createElement("div");
+            message.innerText = event.data.data;
+            messages.appendChild(message);
+          }
+        };
+      }
+    });
+    document.querySelector("button").addEventListener("click", () => {
+      if (messagePort) {
+        messagePort.postMessage({
+          type: "EVENT",
+          data: "woo!",
+        });
+      }
+    });
+  </script>
+</html>
